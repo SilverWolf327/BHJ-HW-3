@@ -17,38 +17,24 @@ class Game {
   }
 
   registerEvents() {
-    let currentWord = this.wordElement.querySelectorAll('.symbol')
-    const currentWordArray = [...currentWord];
-    
-    document.addEventListener('keydown', (event) => {
-
-      this.pressedSymbol = event.key;
-      console.log(this.currentSymbol.innerHTML.toLowerCase());
-      console.log(this.pressedSymbol)
-      console.log(this.currentSymbol.innerHTML.toLowerCase() === this.pressedSymbol.toLowerCase())
-        
-      console.log('начало проверки')
-      if (this.currentSymbol.innerHTML.toLowerCase() !== this.pressedSymbol.toLowerCase()) {
-            
-        this.fail()
-        console.log('нажата не та клавиша!!!')
-        
-        } else {
-            
-            this.currentSymbol.classList.remove('symbol_current');
-          
-            if (currentWordArray.indexOf(this.currentSymbol) < currentWord.length -1) {
-              currentWord[
-              currentWordArray.indexOf(this.currentSymbol) + 1
-              ].classList.add('symbol_current');
-            }
-
-          this.success()
-
-        };
-      });
+    let index = 0;
+    const that = this;
+    document.onkeypress = function(event) {
+     const symbol = document.body.querySelectorAll(".symbol");
+      
+      let arr = Array.from(symbol);
+      if (arr[index].textContent == event.key.toLowerCase()) {
+        index += 1;
+        that.success();
+        if (index  == (arr.length)){
+          index = 0;
+        }
+      } else {
+        that.fail()
+      }
+    }
   }
-  }
+
 
   success() {
     if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
